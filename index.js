@@ -4,41 +4,79 @@ import axios from "axios";
 
 const app = express();
 const port = 3000;
+const API_URL = "https://v2.jokeapi.dev/joke";
+const dash_sep = '----------------------------------------------';
 
+console.log(dash_sep.length);
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Step 1: Make sure that when a user visits the home page,
-//   it shows a random activity.You will need to check the format of the
-//   JSON data from response.data and edit the index.ejs file accordingly.
+
 app.get("/", async (req, res) => {
   try {
-    const response = await axios.get("https://bored-api.appbrewery.com/random");
-    const result = response.data;
-    res.render("index.ejs", { data: result });
+    const response = await axios.get(API_URL + '/Any?format=txt');
+    //console.log(response.data);
+    //const result = JSON.stringify(response.data);
+    console.log(result);
+    res.render("index.ejs", { data: response.data});
   } catch (error) {
     console.error("Failed to make request:", error.message);
     res.render("index.ejs", {
       error: error.message,
     });
-  }
+  } 
 });
 
 app.post("/", async (req, res) => {
   console.log(req.body);
-  const usr_type = req.body["type"];
-  const usr_participants = req.body["participants"];
-  // Step 2: Play around with the drop downs and see what gets logged.
-  // Use axios to make an API request to the /filter endpoint. Making
-  // sure you're passing both the type and participants queries.
+  const usr_category = req.body["category"];
+  const black_list = req.body["Block Topics"];
+  const searched_word = req.body["searched_word"];
+  const jokes_num = req.body["jokes_num"];
+
   try {
-    const response = await axios.get(`https://bored-api.appbrewery.com/filter?type=${usr_type}&participants=${usr_participants}`);
-    const result = response.data;
+    let axios_dir = API_URL;
+    if(usr_category){
+      axios_dir += `/${usr_category}?format=txt`;
+    }
+    else{
+      axios_dir += `/Any?format=txt`;
+    }
+    if (black_list){
+      axios_dir += `&blacklistFlags=${black_list}`;
+    }
+
+    if(searched_word){
+      axios_dir += `&contains=${searched_word}`;
+    }
+
+    if(jokes_num){
+      axios_dir += `&amount=${jokes_num}`;
+    }
+    const response = await axios.get(axios_dir);
+
+    const result = JSON.stringify(response.data);
     // Render the index.ejs file with a single *random* activity that comes back
     // from the API request.
-    console.log(result.length);
-    var idx = Math.floor(Math.random()*result.length);
-    res.render("index.ejs", { data: result[idx] });
+    const selectedChoices = req.body["choices"] || [];
+    // keep checkers marked even after submitting
+    const checked = {};
+    const choicesArray = Array.isArray(selectedChoices) ? selectedChoices : [selectedChoices];
+    choicesArray.forEach(choice => {
+      checked[choice] = 'checked'; // Set 'checked' attribute for selected checkboxes
+    });
+
+    if (selectedChoices) {
+      console.log('Selected choices:', selectedChoices);
+      // Do something with the selected choices, like saving to a database
+    } else {
+      console.log('No choices selected.');
+    }
+
+    
+    res.render("index.ejs", { data: response.data, checked: checked, dash_line: dash_sep });
+    
+    console.log("wiii " + response.data.slice(2,5));
   } catch (error) {
     console.error("Failed to make request:", error.message);
     //console.error(error.response.status);
@@ -47,9 +85,7 @@ app.post("/", async (req, res) => {
       error_stat: error.response.status
     });
   }
-  // Step 3: If you get a 404 error (resource not found) from the API request.
-  // Pass an error to the index.ejs to tell the user:
-  // "No activities that match your criteria."
+  
 });
 
 app.listen(port, () => {

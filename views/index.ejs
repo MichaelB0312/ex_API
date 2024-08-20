@@ -5,66 +5,139 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/styles/main.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
   <title>I'm Bored</title>
 </head>
 
 <body>
   <div class="container">
-    <h1>Let's find something for you to do ✌️</h1>
-
     <form action="/" id="form" class="form" method="POST">
-      <select name="type" class="form-select">
-        <option value="" data-display="Select">Random type</option>
-        <option value="education">Education</option>
-        <option value="charity">Charity</option>
-        <option value="recreational">Recreational</option>
-        <option value="relaxation">Relaxation</option>
-        <option value="busywork">Busywork</option>
-        <option value="social">Social</option>
-        <option value="diy">DIY</option>
-        <option value="music">Music</option>
-      </select>
-      <select name="participants" class="form-select">
-        <option value="">Any number of people</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-      </select>
+    <!-- categories -->
+    <div class="row describe">
+        <div class="col-4 ">
+          <p>Pick a Category ✌️</p>
+        </div>
+        <div class="col-4">
+          <select name="category" class="form-select">
+            <option value="" data-display="Select">Random type</option>
+            <option value="Any">Any</option>
+            <option value="Misc">Misc</option>
+            <option value="Programming">Programming</option>
+            <option value="Dark">Dark</option>
+            <option value="Pun">Pun</option>
+            <option value="Spooky">Spooky</option>
+            <option value="Christmas">Christmas</option>
+          </select> 
+        </div>
+        <div class="col-4">
+          <select name="Block Topics" class="form-select">
+            <option value="">Block Topics option</option>
+            <option value="nsfw">nsfw</option>
+            <option value="religious">religious</option>
+            <option value="political">political</option>
+            <option value="racist">racist</option>
+            <option value="sexist">sexist</option>
+            <option value="explicit">explicit</option>
+          </select>
+        </div>
+     </div>
+     <!-- black list -->
+      <div class="row multiselect noselect">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="inlineCheckbox1" name="choices" value="nsfw" <% if(locals.checked){ %><%= checked['nsfw'] || '' %> <% } %>>
+          <label class="form-check-label" for="inlineCheckbox1">nsfw</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="choices" value="religious" <% if(locals.checked){ %><%= checked['religious'] || '' %><% } %>>
+          <label class="form-check-label" for="inlineCheckbox2">religious</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="inlineCheckbox3" name="choices" value="political" <% if(locals.checked){ %><%= checked['political'] || '' %><% } %>>
+          <label class="form-check-label" for="inlineCheckbox3">political</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="inlineCheckbox3" name="choices" value="racist" <% if(locals.checked){ %><%= checked['racist'] || '' %><% } %>>
+          <label class="form-check-label" for="inlineCheckbox3">racist</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="inlineCheckbox3" name="choices" value="sexist" <% if(locals.checked){ %><%= checked['sexist'] || '' %><% } %>>
+          <label class="form-check-label" for="inlineCheckbox3">sexist</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="inlineCheckbox3" name="choices" value="explicit" <% if(locals.checked){ %><%= checked['explicit'] || '' %><% } %>>
+          <label class="form-check-label" for="inlineCheckbox3">explicit</label>
+        </div>
+      </div>
+      <!-- single or two parts  -->
+      <div class="row single-two">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" id="exampleRadios1" name="choices" value="single" <% if(locals.checked){ %><%= checked['single'] || '' %><% } %>>
+          <label class="form-check-label" for="exampleRadios1">
+            Single sentence joke
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" id="exampleRadios2" name="choices" value="twopart" <% if(locals.checked){ %><%= checked['twopart'] || '' %><% } %>>  
+          <label class="form-check-label" for="exampleRadios2">
+            Q&A joke
+          </label>
+        </div>
+      </div>
+      <!-- search  -->
+      <div class="row input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">Search</span>
+        <input type="text" name="searched_word" class="form-control" placeholder="search for joke contains your desired word" aria-label="search" aria-describedby="basic-addon1">
+      </div>
+      <!-- Amount of jokes -->
+      <div class="row multiselect noselect" id="jokeAmountWrapper" style="border-color: initial;">
+        <input type="number" id="jokesAmountInput" name="jokes_num" value="1" min="1" step="1" oninput="reRender()" max="10">
+      </div>
+
+
       <button type="submit" class="form-submit">Go</button>
     </form>
 
+
     <% if(locals.data) { %>
     <section id="cards" class="cards">
-      <article class="card-item">
-        <h2 class="card-activity">
-          <!-- Show Activity -->
-          <%= data.activity %>
-        </h2>
-        <div class="card-info">
-          <span class="card-type">
-            <!-- Show Activity type -->
-             <%= data.type %>
-          </span>
-          <span class="card-participants">
-            <!-- participants: Show participant number -->
-             <%= data.participants %>
-            <span class="card-number"></span>
-          </span>
-        </div>
-      </article>
+      <% var i = 0;
+         var start_ch = 0;
+         var catched_dash = 0;
+         while(i < data.length && locals.dash_line){
+            if((i+dash_line.length<data.length) && (data.slice(i, i+dash_line.length) == dash_line)){ %>
+                <article class="card-item">
+                  <h2 class="card-activity">
+
+                    <%= data.slice(start_ch, i)  %> 🤣
+                    <% console.log("why so hard " + data.slice(start_ch, i)); %>
+                     
+                  </h2>
+                  <% start_ch = i+dash_line.length; i += dash_line.length; catched_dash=1;  %>
+                  
+                </article>
+            <%}else{ 
+                  i++;
+                  
+              }
+         }%>
+         <% if(catched_dash){ %>
+                <article class="card-item">
+                  <h2 class="card-activity">
+
+                    <%= data.slice(start_ch, i)  %> 🤣
+                    <% console.log("why so hard " + data.slice(start_ch, i)); %>
+                  </h2>
+  
+                </article> 
+         <%}%>
     </section>
     <% } %>
 
     <% if(locals.error){ %> 
           <div id="tag-error" class="tag-error">
           
-          <% if(error_stat == 404){ %>
                   <h3>  No activities that match your criteria. </h3>
         <!-- Show any errors that were sent from the backend -->
-            <% }else{ %>
-                  <%= error %>
-              <%}%>
         </div>
       <% } %>
     
@@ -73,3 +146,15 @@
 </body>
 
 </html>
+
+                  <div class="card-info">
+                    <span class="card-type">
+                      
+                      
+                    </span>
+                    <span class="card-participants">
+                      
+                      
+                      <span class="card-number"></span>
+                    </span>
+                  </div> 
