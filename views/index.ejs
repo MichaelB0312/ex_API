@@ -1,23 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/styles/main.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-  <title>I'm Bored</title>
-</head>
-
-<body>
+<%- include("./partials/home_page.ejs") %>
+<section id="jokes-form">
   <div class="container">
-    <form action="/" id="form" class="form" method="POST">
+    <form action="/#cards" id="form" class="form" method="POST">
     <!-- categories -->
-    <div class="row describe">
-        <div class="col-4 ">
+    <div class="row describe d-flex align-items-baseline">
+        <div class="describe-title col-4 ">
           <p>Pick a Category ✌️</p>
         </div>
-        <div class="col-4">
+        <div class="col-8">
           <select name="category" class="form-select">
             <option value="" data-display="Select">Random type</option>
             <option value="Any">Any</option>
@@ -29,72 +19,99 @@
             <option value="Christmas">Christmas</option>
           </select> 
         </div>
-        <div class="col-4">
-          <select name="Block Topics" class="form-select">
-            <option value="">Block Topics option</option>
-            <option value="nsfw">nsfw</option>
-            <option value="religious">religious</option>
-            <option value="political">political</option>
-            <option value="racist">racist</option>
-            <option value="sexist">sexist</option>
-            <option value="explicit">explicit</option>
-          </select>
-        </div>
+        
      </div>
      <!-- black list -->
-      <div class="row multiselect noselect">
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" id="inlineCheckbox1" name="choices" value="nsfw" <% if(locals.checked){ %><%= checked['nsfw'] || '' %> <% } %>>
-          <label class="form-check-label" for="inlineCheckbox1">nsfw</label>
+      <div class="row blacklist">
+        <div class="blacklist-title col-4">
+          <p>Forbidden Topics 
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sign-stop" viewBox="0 0 16 16">
+              <path d="M3.16 10.08c-.931 0-1.447-.493-1.494-1.132h.653c.065.346.396.583.891.583.524 0 .83-.246.83-.62 0-.303-.203-.467-.637-.572l-.656-.164c-.61-.147-.978-.51-.978-1.078 0-.706.597-1.184 1.444-1.184.853 0 1.386.475 1.436 1.087h-.645c-.064-.32-.352-.542-.797-.542-.472 0-.77.246-.77.6 0 .261.196.437.553.522l.654.161c.673.164 1.06.487 1.06 1.11 0 .736-.574 1.228-1.544 1.228Zm3.427-3.51V10h-.665V6.57H4.753V6h3.006v.568H6.587Z"/>
+              <path fill-rule="evenodd" d="M11.045 7.73v.544c0 1.131-.636 1.805-1.661 1.805-1.026 0-1.664-.674-1.664-1.805V7.73c0-1.136.638-1.807 1.664-1.807s1.66.674 1.66 1.807Zm-.674.547v-.553c0-.827-.422-1.234-.987-1.234-.572 0-.99.407-.99 1.234v.553c0 .83.418 1.237.99 1.237.565 0 .987-.408.987-1.237m1.15-2.276h1.535c.82 0 1.316.55 1.316 1.292 0 .747-.501 1.289-1.321 1.289h-.865V10h-.665zm1.436 2.036c.463 0 .735-.272.735-.744s-.272-.741-.735-.741h-.774v1.485z"/>
+              <path fill-rule="evenodd" d="M4.893 0a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353L11.46.146A.5.5 0 0 0 11.107 0zM1 5.1 5.1 1h5.8L15 5.1v5.8L10.9 15H5.1L1 10.9z"/>
+            </svg> &nbsp;&nbsp;&nbsp;&nbsp;
+          </p>
         </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="choices" value="religious" <% if(locals.checked){ %><%= checked['religious'] || '' %><% } %>>
-          <label class="form-check-label" for="inlineCheckbox2">religious</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" id="inlineCheckbox3" name="choices" value="political" <% if(locals.checked){ %><%= checked['political'] || '' %><% } %>>
-          <label class="form-check-label" for="inlineCheckbox3">political</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" id="inlineCheckbox3" name="choices" value="racist" <% if(locals.checked){ %><%= checked['racist'] || '' %><% } %>>
-          <label class="form-check-label" for="inlineCheckbox3">racist</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" id="inlineCheckbox3" name="choices" value="sexist" <% if(locals.checked){ %><%= checked['sexist'] || '' %><% } %>>
-          <label class="form-check-label" for="inlineCheckbox3">sexist</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" id="inlineCheckbox3" name="choices" value="explicit" <% if(locals.checked){ %><%= checked['explicit'] || '' %><% } %>>
-          <label class="form-check-label" for="inlineCheckbox3">explicit</label>
-        </div>
-      </div>
-      <!-- single or two parts  -->
-      <div class="row single-two">
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" id="exampleRadios1" name="choices" value="single" <% if(locals.checked){ %><%= checked['single'] || '' %><% } %>>
-          <label class="form-check-label" for="exampleRadios1">
-            Single sentence joke
-          </label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" id="exampleRadios2" name="choices" value="twopart" <% if(locals.checked){ %><%= checked['twopart'] || '' %><% } %>>  
-          <label class="form-check-label" for="exampleRadios2">
-            Q&A joke
-          </label>
+        <div class="black-checks col-8">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" name="choices" value="nsfw" <% if(locals.checked){ %><%= checked['nsfw'] || '' %> <% } %>>
+            <label class="form-check-label" for="inlineCheckbox1">nsfw</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="choices" value="religious" <% if(locals.checked){ %><%= checked['religious'] || '' %><% } %>>
+            <label class="form-check-label" for="inlineCheckbox2">religious</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox3" name="choices" value="political" <% if(locals.checked){ %><%= checked['political'] || '' %><% } %>>
+            <label class="form-check-label" for="inlineCheckbox3">political</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox3" name="choices" value="racist" <% if(locals.checked){ %><%= checked['racist'] || '' %><% } %>>
+            <label class="form-check-label" for="inlineCheckbox3">racist</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox3" name="choices" value="sexist" <% if(locals.checked){ %><%= checked['sexist'] || '' %><% } %>>
+            <label class="form-check-label" for="inlineCheckbox3">sexist</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox3" name="choices" value="explicit" <% if(locals.checked){ %><%= checked['explicit'] || '' %><% } %>>
+            <label class="form-check-label" for="inlineCheckbox3">explicit</label>
+          </div>
         </div>
       </div>
+      
       <!-- search  -->
-      <div class="row input-group mb-3">
-        <span class="input-group-text" id="basic-addon1">Search</span>
-        <input type="text" name="searched_word" class="form-control" placeholder="search for joke contains your desired word" aria-label="search" aria-describedby="basic-addon1">
+      
+      <div class="row search d-flex align-items-baseline">
+        <div class="search-title col-4">
+          <span class="input-group-text" id="basic-addon1">Search</span>
+        </div>
+        <div class="search-content col-8">
+          <input type="text" name="searched_word" class="form-control" placeholder="search for joke contains your desired word" aria-label="search" aria-describedby="basic-addon1">
+        </div>
       </div>
       <!-- Amount of jokes -->
-      <div class="row multiselect noselect" id="jokeAmountWrapper" style="border-color: initial;">
-        <input type="number" id="jokesAmountInput" name="jokes_num" value="1" min="1" step="1" oninput="reRender()" max="10">
+      <div class="row amount noselect d-flex align-items-baseline" id="jokeAmountWrapper" style="border-color: initial;">
+        <div class="amount-title col-4">
+          <p>Amount of jokes</p>
+        </div>
+        <div class="amount-content col-8">
+        ` <input type="number" id="jokesAmountInput" name="jokes_num" value="1" min="1" step="1" oninput="reRender()" max="10">
+        </div>
       </div>
 
+      <!-- single or two parts  -->
+      <div class="row single-two">
+        <div class="single-two-title col-4 ">
+          <p>Joke Structure</p>
+        </div>
+        <div class="single-two-content col-8">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="exampleRadios1" name="choices" value="single" <% if(locals.checked){ %><%= checked['single'] || '' %><% } %>>
+            <label class="form-check-label" for="exampleRadios1">
+              Single sentence joke
+            </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="exampleRadios2" name="choices" value="twopart" <% if(locals.checked){ %><%= checked['twopart'] || '' %><% } %>>  
+            <label class="form-check-label" for="exampleRadios2">
+              Q&A joke
+            </label>
+          </div>
+        </div>
+      </div>
 
-      <button type="submit" class="form-submit">Go</button>
+      <!-- safe mode -->
+      <div class="row safe-mode form-check form-switch d-flex align-items-baseline">
+        <div class="safe-title col-4">
+          <label class="form-check-label" for="flexSwitchCheckDefault">Safe Mode</label>
+        </div>
+        <div class="safe-content col-8 pb-4 ps-4">
+          <input class="form-check-input " type="checkbox" role="switch" id="flexSwitchCheckDefault" name="choices" value="safeMode" <% if(locals.checked){ %><%= checked['safeMode'] || '' %><% } %>>
+        </div>
+      </div>
+
+      <button type="submit" class="form-submit">Generate a Joke</button>
     </form>
 
 
@@ -120,7 +137,7 @@
                   
               }
          }%>
-         <% if(catched_dash){ %>
+         <% if(catched_dash || jokes_num==1){ %>
                 <article class="card-item">
                   <h2 class="card-activity">
 
@@ -142,6 +159,7 @@
       <% } %>
     
   </div>
+</section>
 
 </body>
 

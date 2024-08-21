@@ -31,6 +31,7 @@ app.post("/", async (req, res) => {
   console.log(req.body);
   const usr_category = req.body["category"];
   const black_list = req.body["Block Topics"];
+  
   const searched_word = req.body["searched_word"];
   const jokes_num = req.body["jokes_num"];
 
@@ -42,9 +43,9 @@ app.post("/", async (req, res) => {
     else{
       axios_dir += `/Any?format=txt`;
     }
-    if (black_list){
-      axios_dir += `&blacklistFlags=${black_list}`;
-    }
+    // if (black_list){
+    //   axios_dir += `&blacklistFlags=${black_list}`;
+    // }
 
     if(searched_word){
       axios_dir += `&contains=${searched_word}`;
@@ -53,12 +54,12 @@ app.post("/", async (req, res) => {
     if(jokes_num){
       axios_dir += `&amount=${jokes_num}`;
     }
-    const response = await axios.get(axios_dir);
+    
 
-    const result = JSON.stringify(response.data);
     // Render the index.ejs file with a single *random* activity that comes back
     // from the API request.
     const selectedChoices = req.body["choices"] || [];
+    
     // keep checkers marked even after submitting
     const checked = {};
     const choicesArray = Array.isArray(selectedChoices) ? selectedChoices : [selectedChoices];
@@ -66,15 +67,35 @@ app.post("/", async (req, res) => {
       checked[choice] = 'checked'; // Set 'checked' attribute for selected checkboxes
     });
 
-    if (selectedChoices) {
-      console.log('Selected choices:', selectedChoices);
+    if(choicesArray[choicesArray.length-1] == 'safeMode'){
+      axios_dir += `&safe-mode`;
+      choicesArray.pop();
+    }
+
+    console.log("wooooooo " + choicesArray[choicesArray.length-1]);
+    
+    if(choicesArray[choicesArray.length-1] == 'single' ||
+      choicesArray[choicesArray.length-1] == 'twopart'){
+          
+          axios_dir += `&type=${choicesArray[choicesArray.length-1]}`;
+          choicesArray.pop();
+    }
+
+    console.log("this is black " + API_URL + `&blacklistFlags=${choicesArray}`);
+
+    if (choicesArray) {
+      console.log('Selected choices:', choicesArray);
+      
+      axios_dir += `&blacklistFlags=${choicesArray}`;
+     
       // Do something with the selected choices, like saving to a database
     } else {
       console.log('No choices selected.');
     }
 
+    const response = await axios.get(axios_dir);
     
-    res.render("index.ejs", { data: response.data, checked: checked, dash_line: dash_sep });
+    res.render("index.ejs", { data: response.data, checked: checked, dash_line: dash_sep, jokes_num:jokes_num });
     
     console.log("wiii " + response.data.slice(2,5));
   } catch (error) {
