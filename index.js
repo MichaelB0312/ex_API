@@ -72,8 +72,7 @@ app.post("/", async (req, res) => {
       choicesArray.pop();
     }
 
-    console.log("wooooooo " + choicesArray[choicesArray.length-1]);
-    
+  
     if(choicesArray[choicesArray.length-1] == 'single' ||
       choicesArray[choicesArray.length-1] == 'twopart'){
           
@@ -81,7 +80,6 @@ app.post("/", async (req, res) => {
           choicesArray.pop();
     }
 
-    console.log("this is black " + API_URL + `&blacklistFlags=${choicesArray}`);
 
     if (choicesArray) {
       console.log('Selected choices:', choicesArray);
