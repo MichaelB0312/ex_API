@@ -13,9 +13,6 @@
 
 * [Background](#background)
 * [Running Instructions](#running-instructions)
-* [Prerequisites](#prerequisites)
-* [Files in the repository](#files-in-the-repository)
-* [Prerequisites](#prerequisites)
 
 ## Background
 I'm using jokes dataset with uitilites of external [JokesAPI](https://v2.jokeapi.dev/) . There are sevaral categories `Misc, Programming, Dark, Pun, Spooky, Christmas` and there are multiple filters for user in order to pick the rightmost joke. For example: forbidden topics like `racist` or `sexsual`, `safe-mode` for children, `search` bar and more.
@@ -32,11 +29,3 @@ After cloning the repository to your local directory (```mkdir <your directory>`
 Our Server will run on port `3000` by typing the command ```nodemon index.js``` on terminal.
 
 
-## Prerequisites
-|Library         | Version |
-|--------------------|----|
-|`Python`|  `3.9 (Anaconda)`|
-|`numpy`| `1.22.3`|
-|`torch`| `1.11.0`|
-|`torchvision`| `0.12.0`|
-|`matplotlib`| `3.5.2 `|
